@@ -1,9 +1,9 @@
 /*
-	�ùķ��̼� ����
-	1) map�� ���� ��ܺ��� �����ؼ� ���� ��ƼĿ�� ���� �� �ִ��� üũ!
-	2) ��� �κп� ���� ��ƼĿ�� ���� �� ���ٸ� ��ƼĿ�� rotate !
-	3) rotate�� 4�� �����ؼ� ���� ��ƼĿ ������� ���ƿԴµ��� ���� �� ���ٸ� ��ƼĿ�� ������.
-	4) ��ƼĿ�� ���� �� �ִٸ� ��ƼĿ�� '1' �κи� map���� �Ű��ش�.
+	시뮬레이션 문제
+	1) map의 왼쪽 상단부터 시작해서 현재 스티커를 붙일 수 있는지 체크!
+	2) 모든 부분에 현재 스티커를 붙일 수 없다면 스티커를 rotate !
+	3) rotate를 4번 진행해서 원래 스티커 모양으로 돌아왔는데도 붙일 수 없다면 스티커를 버린다.
+	4) 스티커를 붙일 수 있다면 스티커의 '1' 부분만 map으로 옮겨준다.
 */
 #include<iostream>
 
@@ -17,7 +17,7 @@ int main(void) {
 	bool map[40][40] = {};
 	cin >> mapRows >> mapCols >> stickers;
 	for (int sticker = 0; sticker < stickers; sticker++) {
-		// ��ƼĿ �Է�
+		// 스티커 입력
 		int stickerRows, stickerCols;
 		bool stickerMap[10][10] = {};
 		cin >> stickerRows >> stickerCols;
@@ -25,16 +25,16 @@ int main(void) {
 			for (int stickerC = 0; stickerC < stickerCols; stickerC++)
 				cin >> stickerMap[stickerR][stickerC];
 
-		// 4���⿡ ���ؼ� ��ƼĿ�� ��, ���ʺ��� �ٿ�����.
+		// 4방향에 대해서 스티커를 위, 왼쪽부터 붙여보자.
 		for (int rotate = 0; rotate < 4; rotate++) {
 			bool success = false;
 			for (int j = 0; j <= mapRows - stickerRows; j++) {
 				for (int k = 0; k <= mapCols - stickerCols; k++) {
-					// map�� (j,k) ���� �����ؼ� ��ƼĿ�� �ٿ�����.
+					// map의 (j,k) 에서 시작해서 스티커를 붙여보자.
 					bool fail = false;
 					for (int stickerR = 0; stickerR < stickerRows; stickerR++) {
 						for (int stickerC = 0; stickerC < stickerCols; stickerC++) {
-							if (map[j + stickerR][k + stickerC] && stickerMap[stickerR][stickerC]) { // �̹� ��ƼĿ�� ���� ���� �ٿ����ϴ� ���
+							if (map[j + stickerR][k + stickerC] && stickerMap[stickerR][stickerC]) { // 이미 스티커가 붙은 곳에 붙여야하는 경우
 								fail = true;
 								stickerR = stickerRows, stickerC = stickerCols;
 							}
@@ -51,15 +51,15 @@ int main(void) {
 			}
 			if (success) break;
 
-			// 90�� ȸ����Ű��
+			// 90도 회전시키자
 			bool copyStickerMap[10][10] = {};
 			for(int stickerR = 0; stickerR < stickerCols; stickerR++)
 				for(int stickerC = 0; stickerC < stickerRows; stickerC++)
 					copyStickerMap[stickerR][stickerC] = stickerMap[stickerRows- 1 - stickerC][stickerR];
-			int temp = stickerRows; // ȸ���ϴϱ� row, col SWAP
+			int temp = stickerRows; // 회전하니까 row, col SWAP
 			stickerRows = stickerCols;
 			stickerCols = temp;
-			for (int stickerR = 0; stickerR < 10; stickerR++) // ȸ����Ų copyMap �������ֱ�
+			for (int stickerR = 0; stickerR < 10; stickerR++) // 회전시킨 copyMap 복사해주기
 				for (int stickerC = 0; stickerC < 10; stickerC++)
 					stickerMap[stickerR][stickerC] = copyStickerMap[stickerR][stickerC];
 
