@@ -1,7 +1,7 @@
 /*
-	BFSÅ½»öÀ» ÅëÇØ 
-	( ÇöÀç fullness, ¹°¸¶½ÅÀûÀÖ´ÂÁö¾ø´ÂÁö ) ¿¡¼­
-	°¥ ¼ö ÀÖ´Â ¸ðµç °æ¿ìÀÇ ¼ö·Î Å½»öÀ» ÁøÇàÇÑ´Ù.
+	BFSíƒìƒ‰ì„ í†µí•´ 
+	( í˜„ìž¬ fullness, ë¬¼ë§ˆì‹ ì ìžˆëŠ”ì§€ì—†ëŠ”ì§€ ) ì—ì„œ
+	ê°ˆ ìˆ˜ ìžˆëŠ” ëª¨ë“  ê²½ìš°ì˜ ìˆ˜ë¡œ íƒìƒ‰ì„ ì§„í–‰í•œë‹¤.
 */
 #include<iostream>
 #include<queue>
