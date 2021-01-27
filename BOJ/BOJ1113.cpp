@@ -17,7 +17,7 @@
 
 using namespace std;
 
-int N, M, ans;
+int N, M;
 int walls[52][52];
 int res[52][52];
 int dx[4] = { -1, 0, 1, 0 }, dy[4] = { 0, -1, 0, 1 };
@@ -59,10 +59,12 @@ void BFS(int water) {
 				res[i][j] = water - walls[i][j];
 }
 
-void getAns() {
+int getAns() {
+	int ans = 0;
 	for (int i = 1; i <= N; i++)
 		for (int j = 1; j <= M; j++)
 			ans += res[i][j];
+	return ans;
 }
 
 int main(void) {
@@ -81,8 +83,8 @@ int main(void) {
 		set();
 		BFS(water);
 	}
-	getAns();
-	cout << ans << '\n';
+	
+	cout << getAns() << '\n';
 
 	return 0;
 }
