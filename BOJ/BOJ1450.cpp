@@ -40,6 +40,24 @@ int main(void) {
 		for (int j = 0; j < cases[1].size(); j++)
 			if (cases[0][i] + cases[1][j] <= C)
 				ans++;
+	
+	/* 최적화를 위해 C보다 무게가 낮은 경우를 BinarySearch를 이용해 찾으면 더 최적화 시킬 수 있다.
+	sort(cases[1].begin(), cases[1].end());
+	for (int i = 0; i < cases[0].size(); i++) {
+		int ind = 0, left = 0, right = cases[1].size() - 1;
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			if (cases[0][i] + cases[1][mid] <= C) {
+				ind = mid;
+				left = mid + 1;
+			}
+			else {
+				right = mid - 1;
+			}
+		}
+		ans += ind + 1;
+	}
+	*/
 	cout << ans << '\n';
 
 	return 0;
