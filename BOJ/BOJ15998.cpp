@@ -58,14 +58,14 @@ int main(void) {
 		logs.push_back({ a, b });
 	}
 
-	int isPossible = 1;
+	bool isPossible = true;
 	ll maxValue = -1, balance = 0;
 	vector<ll> divide;
 	for (pair<ll, ll> log : logs) {
 		if (log.first > 0 || -log.first <= balance) { // 입금 혹은 출금이 정상적으로 이루어지는 경우
 			balance += log.first;
 			if (balance != log.second){
-				isPossible = -1;
+				isPossible = false;
 				break;
 			}
 		}
@@ -76,15 +76,17 @@ int main(void) {
 		}
 	}
 
-	if (maxValue == -1) cout << isPossible << '\n';
+	if (!isPossible) cout << -1 << '\n'; 
 	else {
-		ll gcd = makeGCD(divide);
-		if (maxValue < gcd && gcd <= MAX) {
-			cout << gcd << '\n';
+		if (maxValue == -1) cout << isPossible << '\n';
+		else {
+			ll gcd = makeGCD(divide);
+			if (maxValue < gcd && gcd <= MAX) {
+				cout << gcd << '\n';
+			}
+			else
+				cout << -1 << '\n';
 		}
-		else
-			cout << -1 << '\n';
 	}
-	
 	return 0;
 }
