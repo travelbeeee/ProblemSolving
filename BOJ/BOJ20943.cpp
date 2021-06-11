@@ -53,19 +53,16 @@ int main(void) {
 			 * paper[3] % 4 --> 2 라면 2cm 3개 1cm 6개
 			 * paper[3] % 4 --> 3 라면 2cm 1개 1cm 5개 
 			*/
+			int m = paper[3] % 4;
 			int maxOne[4] = { 0, 7, 6, 5 };
 			int maxTwo[4] = { 0, 5, 3, 1 };
-			for (int m = 1; m <= 3; m++) {
-				if (paper[3] % 4 == m) {
-					if (paper[2] < maxTwo[m]) {
-						paper[1] -= (maxOne[m] + 4 * (maxTwo[m] - paper[2]));
-						paper[2] = 0;
-					}
-					else if (paper[2] >= maxTwo[m]) {
-						paper[2] -= maxTwo[m];
-						paper[1] -= maxOne[m];
-					}
-				}
+			if (paper[2] < maxTwo[m]) {
+				paper[1] -= (maxOne[m] + 4 * (maxTwo[m] - paper[2]));
+				paper[2] = 0;
+			}
+			else if (paper[2] >= maxTwo[m]) {
+				paper[2] -= maxTwo[m];
+				paper[1] -= maxOne[m];
 			}
 		}
 		paper[3] = 0;
