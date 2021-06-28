@@ -24,15 +24,9 @@ def backtracking(startInd, len):
         cipher.pop()
     return
 
-numInput = input()
-numInput = numInput.split()
-
-alp = input()
-alp = alp.split()
+L, C = map(int, input().split())
+alp = list(map(str, input().split()))
 alp.sort()
-
-L = int(numInput[0])
-C = int(numInput[1])
 
 cipher = []
 
