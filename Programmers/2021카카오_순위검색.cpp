@@ -102,3 +102,95 @@ vector<int> solution(vector<string> info, vector<string> query) {
     }
     return answer;
 }
+
+// 다시 푼 풀이
+#include <string>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+
+using namespace std;
+
+int changePLtoInt(string pl) {
+    if (pl == "cpp") return 0;
+    else if (pl == "java") return 1;
+    else if (pl == "python") return 2;
+    return 3;
+}
+
+int changePositionToInt(string position) {
+    if (position == "backend") return 0;
+    else if (position == "frontend") return 1;
+    return 2;
+}
+
+int changeCareerToInt(string career) {
+    if (career == "junior") return 0;
+    else if (career == "senior") return 1;
+    return 2;
+}
+
+int changeFoodToInt(string food) {
+    if (food == "chicken") return 0;
+    else if (food == "pizza") return 1;
+    return 2;
+}
+
+vector<string> split(string input, char delimiter) {
+    vector<string> res;
+    stringstream ss(input);
+    string temp;
+    while (getline(ss, temp, delimiter)) {
+        res.push_back(temp);
+    }
+    return res;
+}
+
+int selectQuery(int score, vector<int>& scores) {
+
+    int left = 0, right = scores.size() - 1;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (score <= scores[mid]) {
+            right = mid - 1;
+        }
+        else {
+            left = mid + 1;
+        }
+    }
+    return scores.size() - left;
+}
+
+vector<int> solution(vector<string> info, vector<string> query) {
+    vector<int> score[4][3][3][3];
+
+    for (string s : info) {
+        vector<string> splitInfo = split(s, ' ');
+        int plList[2] = { changePLtoInt(splitInfo[0]), 3 };
+        int positionList[2] = { changePositionToInt(splitInfo[1]), 2 };
+        int careerList[2] = { changeCareerToInt(splitInfo[2]), 2 };
+        int foodList[2] = { changeFoodToInt(splitInfo[3]), 2 };
+        for (int pl : plList)
+            for (int position : positionList)
+                for (int career : careerList)
+                    for (int food : foodList)
+                        score[pl][position][career][food].push_back(stoi(splitInfo[4]));
+    }
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 3; j++)
+            for (int k = 0; k < 3; k++)
+                for (int l = 0; l < 3; l++)
+                    sort(score[i][j][k][l].begin(), score[i][j][k][l].end());
+    vector<int> answer;
+    for (string s : query) {
+        vector<string> splitQuery = split(s, ' ');
+        int pl = changePLtoInt(splitQuery[0]);
+        int po = changePositionToInt(splitQuery[2]);
+        int ca = changeCareerToInt(splitQuery[4]);
+        int fo = changeFoodToInt(splitQuery[6]);
+
+        answer.push_back(selectQuery(stoi(splitQuery[7]), score[pl][po][ca][fo]));
+    }
+
+    return answer;
+}
