@@ -32,11 +32,11 @@ string timeToString(int time) {
     return res;
 }
 
-long long sum[360005] = {};
 
 string solution(string play_time, string adv_time, vector<string> logs) {
     int playTime = timeToInt(play_time);
     int advTime = timeToInt(adv_time);
+    long long sum[360005] = {};
 
     for (int i = 0; i < logs.size(); i++) {
         int startTime = timeToInt(logs[i].substr(0, 8));
