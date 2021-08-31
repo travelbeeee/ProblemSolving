@@ -88,3 +88,66 @@ vector<string> solution(vector<string> orders, vector<int> course) {
     sort(answer.begin(), answer.end());
     return answer;
 }
+
+/*
+* 다시 푼 풀이
+*/
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <map>
+
+using namespace std;
+
+void backtracking(int s, int size, int goal, string res, string order, map<string, int>* m) {
+    if (size == goal) {
+        if (m->find(res) == m->end()) {
+            m->insert({ res, 1 });
+        }
+        else {
+            m->find(res)->second = m->find(res)->second + 1;
+        }
+        return;
+    }
+
+    for (int i = s; i < order.length(); i++) {
+        res.push_back(order[i]);
+        backtracking(i + 1, size + 1, goal, res, order, m);
+        res.pop_back();
+    }
+}
+
+vector<string> solution(vector<string> orders, vector<int> course) {
+    // orders 오른차순으로 정리
+    for (string order : orders) {
+        for (int i = 0; i < order.length(); i++) {
+            for (int j = 0; j < order.length() - 1; j++) {
+                if (order[j] > order[j + 1]) {
+                    char c = order[j];
+                    order[j] = order[j + 1];
+                    order[j + 1] = c;
+                }
+            }
+        }
+    }
+
+    vector<string> answer;
+    for (int courseSize : course) {
+        map<string, int> m;
+        for (string order : orders)
+            backtracking(0,0 , courseSize, "", order, &m);
+
+        int maxCnt = -1;
+        for (auto it = m.begin(); it != m.end(); it++) {
+            maxCnt = max(maxCnt, it->second);
+        }
+        for (auto it = m.begin(); it != m.end(); it++) {
+            if(it->second == maxCnt && maxCnt >= 2)
+                answer.push_back(it->first);
+        }
+    }
+
+    sort(answer.begin(), answer.end());
+
+    return answer;
+}
