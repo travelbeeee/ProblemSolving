@@ -54,7 +54,7 @@ using namespace std;
 int solution(int n, int s, int a, int b, vector<vector<int>> fares) {
     const int INF = 99999999;
 
-    int cost[201][201];
+    int cost[201][201] = {};
     for (int i = 1; i <= n; i++){
         for (int j = 1; j <= n; j++){
             if(i != j) cost[i][j] = INF;
