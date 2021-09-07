@@ -80,3 +80,94 @@ vector<vector<int>> solution(int n, vector<vector<int>> build_frame) {
 
     return answer;
 }
+
+// 다시 푼 풀이
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void init(vector<vector<vector<bool>>>* isPut, int n) {
+    vector<vector<bool>> rows;
+    vector<vector<bool>> cols;
+    for (int i = 0; i <= n; i++) {
+        vector<bool> row(n + 1, false);
+        vector<bool> col(n + 1, false);
+        rows.push_back(row);
+        cols.push_back(col);
+    }
+    isPut->push_back(cols);
+    isPut->push_back(rows);
+}
+
+bool isInside(int x, int y, int n) {
+    return (0 <= x && x <= n && 0 <= y && y <= n);
+}
+
+bool isPossiblePut(vector<vector<vector<bool>>>& isPut, int x, int y, int n, bool isRow) {
+    vector<vector<bool>> rows = isPut[1];
+    vector<vector<bool>> cols = isPut[0];
+    if (isRow) {
+        if (isInside(x, y - 1, n) && cols.at(x).at(y - 1)) return true;
+        if (isInside(x + 1, y - 1, n) && cols.at(x + 1).at(y - 1)) return true;
+        if (isInside(x - 1, y, n) && isInside(x + 1, y, n) && rows.at(x - 1).at(y) && rows.at(x + 1).at(y)) return true;
+        return false;
+    }
+    else {
+        if (y == 0) return true;
+        if (isInside(x - 1, y, n) && rows.at(x - 1).at(y)) return true;
+        if (rows.at(x).at(y)) return true;
+        if (isInside(x, y - 1, n) && cols.at(x).at(y - 1)) return true;
+        return false;
+    }
+}
+
+bool isPossibleRemove(vector<vector<vector<bool>>>* isPut, int x, int y, int n, bool isRow) {
+    isPut->at(isRow).at(x).at(y) = false;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j <= n; j++) {
+            for (int k = 0; k <= n; k++) {
+                if (!isPut->at(i).at(j).at(k)) continue;
+                if (!isPossiblePut(*isPut, j, k, n, i)) {
+                    isPut->at(isRow).at(x).at(y) = true;
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+vector<vector<int>> solution(int n, vector<vector<int>> build_frame) {
+    vector<vector<vector<bool>>> isPut;
+
+    init(&isPut, n);
+
+    for (vector<int> build : build_frame) {
+        if (build[3] == 1) { // 설치
+            if (isPossiblePut(isPut, build[0], build[1], n, build[2])){
+                isPut[build[2]][build[0]][build[1]] = true;
+            }
+        }
+        else { // 삭제
+            if (isPossibleRemove(&isPut, build[0], build[1], n, build[2])) {
+                isPut[build[2]][build[0]][build[1]] = false;
+            }
+        }
+    }
+
+    vector<vector<int>> answer;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j <= n; j++) {
+            for (int k = 0; k <= n; k++) {
+                if (isPut[i][j][k]) {
+                    answer.push_back({ j, k, i });
+                }
+            }
+        }
+    }
+    sort(answer.begin(), answer.end());
+
+    return answer;
+}
